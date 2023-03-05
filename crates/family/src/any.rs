@@ -22,12 +22,30 @@ where
 /// # Safety
 /// While calling this is safe, implementing this isn't, as `family_id` is used to check
 /// downcasting.
-pub unsafe trait AnyMember {
+///
+/// ```compile_fail
+/// # use family::{*, any::*};
+/// # use std::{cell::Cell, rc::Rc};
+/// struct Foo;
+/// impl Family for Foo { type Member<'a> = Rc<Cell<&'a str>>; }
+/// impl Member<Foo> for Rc<Cell<&str>> {}
+///
+/// let s = Rc::new(Cell::new("Hello, world!"));
+/// let member: Box<dyn AnyMember> = Box::new(FamilyMember::<Foo>(Rc::clone(&s)));
+/// let s2 = member.downcast::<Foo>().unwrap().0;
+///
+/// // Borrow is set with something only briefly available
+/// s2.set(&"Hello, Rust!".to_string());
+///
+/// // Borrow is used, extending lifetime requirement, and correctly failing to compile
+/// println!("{}", s.get());
+/// ```
+pub unsafe trait AnyMember<'a> {
     /// Get the `TypeId` of the family this is a member of.
     fn family_id(&self) -> TypeId;
 }
 
-unsafe impl<'a, F> AnyMember for FamilyMember<'a, F>
+unsafe impl<'a, F> AnyMember<'a> for FamilyMember<'a, F>
 where
     F: Family,
 {
@@ -36,7 +54,7 @@ where
     }
 }
 
-impl<'a> dyn 'a + AnyMember {
+impl<'a> dyn AnyMember<'a> + 'a {
     /// Downcast a box containing a `FamilyMember`, to an instance with compatible lifetime.
     pub fn downcast<F>(self: Box<Self>) -> Option<Box<FamilyMember<'a, F>>>
     where
@@ -61,12 +79,32 @@ impl<'a> dyn 'a + AnyMember {
 /// # Safety
 /// While calling this is safe, implementing this isn't, as `family_id` is used to check
 /// downcasting.
-pub unsafe trait AnyOption {
+///
+/// ```compile_fail
+/// # use family::{*, any::*};
+/// # use std::cell::Cell;
+/// struct Foo;
+/// impl Family for Foo { type Member<'a> = Cell<&'a str>; }
+/// impl Member<Foo> for Cell<&str> {}
+///
+/// let s = Cell::new("Hello, world!");
+/// let mut o = Some(FamilyMember::<Foo>(s));
+/// let any: &mut dyn AnyOption = &mut o;
+/// let o2 = any.downcast::<Foo>().unwrap();
+///
+/// // Borrow is set with something only briefly available
+/// o2.map(|v| v.0.set(&"Hello, Rust!".to_string()));
+///
+/// // Borrow is used, extending lifetime requirement, and correctly failing to compile
+/// println!("{}", o.unwrap().0.get());
+/// ```
+
+pub unsafe trait AnyOption<'a> {
     /// Get the `TypeId` of the family this is a member of.
     fn family_id(&self) -> TypeId;
 }
 
-unsafe impl<'a, F> AnyOption for Option<FamilyMember<'a, F>>
+unsafe impl<'a, F> AnyOption<'a> for Option<FamilyMember<'a, F>>
 where
     F: Family,
 {
@@ -75,9 +113,9 @@ where
     }
 }
 
-impl<'a> dyn 'a + AnyOption {
+impl<'a: 'b, 'b> dyn AnyOption<'a> + 'b {
     /// Downcast an option containing a `FamilyMember`, to an instance with compatible lifetime.
-    pub fn downcast<'b, F>(&'b mut self) -> Option<&'b mut Option<FamilyMember<'a, F>>>
+    pub fn downcast<F>(&'b mut self) -> Option<&'b mut Option<FamilyMember<'a, F>>>
     where
         F: Family,
     {
