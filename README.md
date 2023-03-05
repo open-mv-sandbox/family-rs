@@ -1,5 +1,7 @@
 ## Family - I can't believe it's not HKT!
 
+> ⚠️ This crate's `any` module uses unsafe code that has not been properly audited for soundness.
+
 A small family pattern implementation, implementing "associated type constructors".
 Additionally provides some dynamic casting utilities that make use of families and members.
 
