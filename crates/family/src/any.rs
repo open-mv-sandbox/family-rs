@@ -98,7 +98,6 @@ impl<'a> dyn AnyMember<'a> + 'a {
 /// // Borrow is used, extending lifetime requirement, and correctly failing to compile
 /// println!("{}", o.unwrap().0.get());
 /// ```
-
 pub unsafe trait AnyOption<'a> {
     /// Get the `TypeId` of the family this is a member of.
     fn family_id(&self) -> TypeId;
@@ -115,7 +114,7 @@ where
 
 impl<'a: 'b, 'b> dyn AnyOption<'a> + 'b {
     /// Downcast an option containing a `FamilyMember`, to an instance with compatible lifetime.
-    pub fn downcast<F>(&'b mut self) -> Option<&'b mut Option<FamilyMember<'a, F>>>
+    pub fn downcast<'c, F>(&'c mut self) -> Option<&'c mut Option<FamilyMember<'a, F>>>
     where
         F: Family,
     {
