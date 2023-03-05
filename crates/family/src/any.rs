@@ -2,6 +2,8 @@
 //!
 //! Rust std's `Any` type is limited to only work on `'static` types.
 //! The limitations added by the family pattern allow it to do downcasting with borrowed types.
+//!
+//! > ⚠️ This module uses unsafe code that has not been properly audited for soundness.
 
 use std::any::TypeId;
 
@@ -54,12 +56,13 @@ impl<'a> dyn 'a + AnyMember {
     }
 }
 
-/// Dynamic upcast type identification for `FamilyMember`.
+/// Dynamic upcast type identification for `Option`s containing `FamilyMember`.
 ///
 /// # Safety
 /// While calling this is safe, implementing this isn't, as `family_id` is used to check
 /// downcasting.
 pub unsafe trait AnyOption {
+    /// Get the `TypeId` of the family this is a member of.
     fn family_id(&self) -> TypeId;
 }
 
