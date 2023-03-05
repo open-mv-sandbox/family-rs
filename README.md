@@ -6,6 +6,10 @@ Additionally provides some dynamic casting utilities that make use of families a
 See this post for more information:
 <http://smallcultfollowing.com/babysteps/blog/2016/11/03/associated-type-constructors-part-2-family-traits/>
 
+## Crates
+
+- [![Crates.io](https://img.shields.io/crates/v/family.svg?label=family)](https://crates.io/crates/family) [![docs.rs](https://docs.rs/family/badge.svg)](https://docs.rs/family/)
+
 ## License
 
 Licensed under either of
