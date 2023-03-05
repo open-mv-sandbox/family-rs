@@ -1,0 +1,10 @@
+[package]
+name = "family"
+version = "0.1.0"
+edition = "2021"
+description = "I can't believe it's not HKT!"
+readme = "../../README.md"
+repository = "https://github.com/open-mv-sandbox/family-rs"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
