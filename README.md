@@ -11,6 +11,7 @@ See this post for more information:
 ## Crates
 
 - [![Crates.io](https://img.shields.io/crates/v/family.svg?label=family)](https://crates.io/crates/family) [![docs.rs](https://docs.rs/family/badge.svg)](https://docs.rs/family/)
+- [![Crates.io](https://img.shields.io/crates/v/family-derive.svg?label=family-derive)](https://crates.io/crates/family-derive) [![docs.rs](https://docs.rs/family-derive/badge.svg)](https://docs.rs/family-derive/)
 
 ## License
 
