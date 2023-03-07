@@ -11,6 +11,8 @@ use std::any::Any;
 pub mod any;
 pub mod utils;
 
+pub use family_derive::Member;
+
 /// Family pattern family interface.
 pub trait Family: Any + Sized {
     type Member<'a>: Member<Self>;
