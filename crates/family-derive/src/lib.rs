@@ -11,7 +11,10 @@ use syn::{parse_macro_input, DeriveInput, Ident};
 pub fn derive_member(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input);
     let DeriveInput {
-        ident, generics, ..
+        vis,
+        ident,
+        generics,
+        ..
     } = input;
 
     let lifetimes = generics.lifetimes().count();
@@ -27,7 +30,7 @@ pub fn derive_member(input: TokenStream) -> TokenStream {
     // Create the family type if necessary
     let family_type = if family_ident != ident {
         quote! {
-            enum #family_ident {}
+            #vis enum #family_ident {}
         }
     } else {
         quote! {}
