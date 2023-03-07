@@ -5,4 +5,4 @@ resolver = "2"
 [workspace.dependencies]
 quote = "1.0.23"
 syn = "1.0.109"
-family-derive = { path = "./crates/family-derive" }
+family-derive = { version = "0.1.0", path = "./crates/family-derive" }
