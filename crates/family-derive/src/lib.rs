@@ -29,7 +29,9 @@ pub fn derive_member(input: TokenStream) -> TokenStream {
 
     // Create the family type if necessary
     let family_type = if family_ident != ident {
+        let docs = format!("`Family` implementation for `{}`.", ident);
         quote! {
+            #[doc = #docs]
             #vis enum #family_ident {}
         }
     } else {
@@ -40,9 +42,9 @@ pub fn derive_member(input: TokenStream) -> TokenStream {
     let output = quote! {
         #family_type
 
-        impl #impl_generics family::Member<#family_ident> for #ident #ty_generics #where_clause {}
+        impl #impl_generics ::family::Member<#family_ident> for #ident #ty_generics #where_clause {}
 
-        impl family::Family for #family_ident {
+        impl ::family::Family for #family_ident {
             type Member<'a> = #ident #generics_gat;
         }
     };
