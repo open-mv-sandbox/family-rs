@@ -5,7 +5,8 @@
 //!
 //! > ⚠️ This module uses unsafe code that has not been properly audited for soundness.
 
-use std::any::TypeId;
+use alloc::boxed::Box;
+use core::any::TypeId;
 
 use crate::Family;
 

@@ -1,3 +1,5 @@
+#![no_std]
+
 //! I can't believe it's not HKT!
 //!
 //! A small family pattern implementation, implementing "associated type constructors".
@@ -6,7 +8,9 @@
 //! See this post for more information:
 //! <http://smallcultfollowing.com/babysteps/blog/2016/11/03/associated-type-constructors-part-2-family-traits/>
 
-use std::any::Any;
+extern crate alloc;
+
+use core::any::Any;
 
 pub mod any;
 pub mod utils;

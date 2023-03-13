@@ -2,7 +2,7 @@
 //!
 //! These are primarily workarounds for a lack of HKT support in Rust.
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 use crate::{Family, Member};
 
